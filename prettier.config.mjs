@@ -14,7 +14,7 @@ const config = {
   endOfLine: "lf",
   insertPragma: false,
   requirePragma: false,
-  printWidth: 120,
+  printWidth: 150,
   plugins: ["prettier-plugin-tailwindcss"],
 };
 

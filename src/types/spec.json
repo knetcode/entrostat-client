@@ -1,0 +1,774 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "OTP Security System API",
+    "description": "API for requesting, resending, and verifying OTPs",
+    "version": "1.0.0"
+  },
+  "components": {
+    "schemas": {}
+  },
+  "paths": {
+    "/ping": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "pong": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/otp/send": {
+      "post": {
+        "tags": [
+          "OTP"
+        ],
+        "description": "Send a new OTP or resend existing OTP if within resend window",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Request to send an OTP to the user's email address",
+                "title": "Send OTP Request",
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "default": "test@example.com",
+                    "description": "Email address",
+                    "title": "Email",
+                    "type": "string",
+                    "maxLength": 255,
+                    "format": "email",
+                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  }
+                },
+                "required": [
+                  "email"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true,
+          "description": "Request to send an OTP to the user's email address"
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": true,
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "default": "OTP sent successfully",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response for send/resend/verify OTP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Error response for send/resend/verify OTP",
+                  "title": "Error Response",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": false,
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "message": {
+                      "default": "Invalid email format",
+                      "type": "string"
+                    },
+                    "errors": {
+                      "default": [
+                        {
+                          "code": "invalid_email",
+                          "path": [
+                            "email"
+                          ],
+                          "message": "Invalid email format"
+                        }
+                      ],
+                      "type": "array",
+                      "items": {
+                        "description": "Individual validation error item",
+                        "title": "Error Item",
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "default": "invalid_string",
+                            "type": "string"
+                          },
+                          "path": {
+                            "default": [
+                              "email"
+                            ],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "message": {
+                            "default": "Invalid email format",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "errors"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "429": {
+            "description": "Rate limit response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Rate limit response",
+                  "title": "Rate Limit Response",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": false,
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "message": {
+                      "default": "Rate limit exceeded",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error response for send/resend/verify OTP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Error response for send/resend/verify OTP",
+                  "title": "Error Response",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": false,
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "message": {
+                      "default": "Invalid email format",
+                      "type": "string"
+                    },
+                    "errors": {
+                      "default": [
+                        {
+                          "code": "invalid_email",
+                          "path": [
+                            "email"
+                          ],
+                          "message": "Invalid email format"
+                        }
+                      ],
+                      "type": "array",
+                      "items": {
+                        "description": "Individual validation error item",
+                        "title": "Error Item",
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "default": "invalid_string",
+                            "type": "string"
+                          },
+                          "path": {
+                            "default": [
+                              "email"
+                            ],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "message": {
+                            "default": "Invalid email format",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "errors"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/otp/resend": {
+      "post": {
+        "tags": [
+          "OTP"
+        ],
+        "description": "Resend an existing OTP if within resend window",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Request to resend an OTP to the user's email address",
+                "title": "Resend OTP Request",
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "default": "test@example.com",
+                    "description": "Email address",
+                    "title": "Email",
+                    "type": "string",
+                    "maxLength": 255,
+                    "format": "email",
+                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  }
+                },
+                "required": [
+                  "email"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true,
+          "description": "Request to resend an OTP to the user's email address"
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": true,
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "default": "OTP sent successfully",
+                      "type": "string"
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response for send/resend/verify OTP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Error response for send/resend/verify OTP",
+                  "title": "Error Response",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": false,
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "message": {
+                      "default": "Invalid email format",
+                      "type": "string"
+                    },
+                    "errors": {
+                      "default": [
+                        {
+                          "code": "invalid_email",
+                          "path": [
+                            "email"
+                          ],
+                          "message": "Invalid email format"
+                        }
+                      ],
+                      "type": "array",
+                      "items": {
+                        "description": "Individual validation error item",
+                        "title": "Error Item",
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "default": "invalid_string",
+                            "type": "string"
+                          },
+                          "path": {
+                            "default": [
+                              "email"
+                            ],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "message": {
+                            "default": "Invalid email format",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "errors"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error response for send/resend/verify OTP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Error response for send/resend/verify OTP",
+                  "title": "Error Response",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": false,
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "message": {
+                      "default": "Invalid email format",
+                      "type": "string"
+                    },
+                    "errors": {
+                      "default": [
+                        {
+                          "code": "invalid_email",
+                          "path": [
+                            "email"
+                          ],
+                          "message": "Invalid email format"
+                        }
+                      ],
+                      "type": "array",
+                      "items": {
+                        "description": "Individual validation error item",
+                        "title": "Error Item",
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "default": "invalid_string",
+                            "type": "string"
+                          },
+                          "path": {
+                            "default": [
+                              "email"
+                            ],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "message": {
+                            "default": "Invalid email format",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "errors"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/otp/verify": {
+      "post": {
+        "tags": [
+          "OTP"
+        ],
+        "description": "Verify an OTP code",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "description": "Request to verify an OTP",
+                "title": "Verify OTP Request",
+                "type": "object",
+                "properties": {
+                  "email": {
+                    "default": "test@example.com",
+                    "description": "Email address",
+                    "title": "Email",
+                    "type": "string",
+                    "maxLength": 255,
+                    "format": "email",
+                    "pattern": "^(?!\\.)(?!.*\\.\\.)([A-Za-z0-9_'+\\-\\.]*)[A-Za-z0-9_+-]@([A-Za-z0-9][A-Za-z0-9\\-]*\\.)+[A-Za-z]{2,}$"
+                  },
+                  "otp": {
+                    "default": "123456",
+                    "description": "OTP code",
+                    "title": "OTP",
+                    "type": "string",
+                    "pattern": "^\\d{6}$"
+                  }
+                },
+                "required": [
+                  "email",
+                  "otp"
+                ],
+                "additionalProperties": false
+              }
+            }
+          },
+          "required": true,
+          "description": "Request to verify an OTP"
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "oneOf": [
+                    {
+                      "description": "Success response for verify OTP",
+                      "title": "Verify Success Response",
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "default": true,
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "valid": {
+                          "default": true,
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "message": {
+                          "default": "OTP verified successfully",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "valid",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    },
+                    {
+                      "description": "Error response for verify OTP",
+                      "title": "Verify Error Response",
+                      "type": "object",
+                      "properties": {
+                        "success": {
+                          "default": true,
+                          "type": "boolean",
+                          "enum": [
+                            true
+                          ]
+                        },
+                        "valid": {
+                          "default": false,
+                          "type": "boolean",
+                          "enum": [
+                            false
+                          ]
+                        },
+                        "message": {
+                          "default": "Invalid or expired OTP",
+                          "type": "string"
+                        }
+                      },
+                      "required": [
+                        "success",
+                        "valid",
+                        "message"
+                      ],
+                      "additionalProperties": false
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Error response for send/resend/verify OTP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Error response for send/resend/verify OTP",
+                  "title": "Error Response",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": false,
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "message": {
+                      "default": "Invalid email format",
+                      "type": "string"
+                    },
+                    "errors": {
+                      "default": [
+                        {
+                          "code": "invalid_email",
+                          "path": [
+                            "email"
+                          ],
+                          "message": "Invalid email format"
+                        }
+                      ],
+                      "type": "array",
+                      "items": {
+                        "description": "Individual validation error item",
+                        "title": "Error Item",
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "default": "invalid_string",
+                            "type": "string"
+                          },
+                          "path": {
+                            "default": [
+                              "email"
+                            ],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "message": {
+                            "default": "Invalid email format",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "errors"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          },
+          "500": {
+            "description": "Error response for send/resend/verify OTP",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "description": "Error response for send/resend/verify OTP",
+                  "title": "Error Response",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": false,
+                      "type": "boolean",
+                      "enum": [
+                        false
+                      ]
+                    },
+                    "message": {
+                      "default": "Invalid email format",
+                      "type": "string"
+                    },
+                    "errors": {
+                      "default": [
+                        {
+                          "code": "invalid_email",
+                          "path": [
+                            "email"
+                          ],
+                          "message": "Invalid email format"
+                        }
+                      ],
+                      "type": "array",
+                      "items": {
+                        "description": "Individual validation error item",
+                        "title": "Error Item",
+                        "type": "object",
+                        "properties": {
+                          "code": {
+                            "default": "invalid_string",
+                            "type": "string"
+                          },
+                          "path": {
+                            "default": [
+                              "email"
+                            ],
+                            "type": "array",
+                            "items": {
+                              "type": "string"
+                            }
+                          },
+                          "message": {
+                            "default": "Invalid email format",
+                            "type": "string"
+                          }
+                        },
+                        "required": [
+                          "code",
+                          "path",
+                          "message"
+                        ],
+                        "additionalProperties": false
+                      }
+                    }
+                  },
+                  "required": [
+                    "success",
+                    "message",
+                    "errors"
+                  ],
+                  "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/openapi.json": {
+      "get": {
+        "responses": {
+          "200": {
+            "description": "Default Response"
+          }
+        }
+      }
+    }
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3001",
+      "description": "Development server"
+    }
+  ],
+  "tags": [
+    {
+      "name": "OTP",
+      "description": "One-Time Password operations"
+    }
+  ]
+}

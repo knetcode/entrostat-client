@@ -10,18 +10,26 @@
   "engines": {
     "node": ">=24.0.0"
   },
-  "packageManager": "pnpm@10.24.0",
+  "packageManager": "pnpm@10.25.0",
   "scripts": {
+    "generate-types": "npx openapi-typescript './src/types/spec.json' --output './src/types/spec.ts'",
+    "format": "prettier --write .",
+    "lint": "eslint",
+    "typecheck": "tsc",
+    "checks": "pnpm generate-types ; pnpm format ; pnpm lint ; pnpm typecheck",
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "eslint",
-    "format": "prettier --write ."
+    "start": "next start"
   },
   "dependencies": {
+    "@t3-oss/env-nextjs": "^0.13.8",
+    "@tanstack/react-query": "^5.90.12",
+    "@tanstack/react-query-devtools": "^5.91.1",
+    "@tanstack/react-query-next-experimental": "^5.91.0",
     "next": "16.0.7",
     "react": "19.2.1",
-    "react-dom": "19.2.1"
+    "react-dom": "19.2.1",
+    "zod": "^4.1.13"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4.1.17",
@@ -30,6 +38,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.1",
     "eslint-config-next": "16.0.7",
+    "openapi-typescript": "^7.10.1",
     "prettier": "^3.7.4",
     "prettier-plugin-tailwindcss": "^0.7.2",
     "tailwindcss": "^4.1.17",
