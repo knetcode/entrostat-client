@@ -1,5 +1,5 @@
 import { useMutation } from "@tanstack/react-query";
-import type { CorrelationIdObject, NextClientRquestHeaders } from "@/src/types";
+import type { CorrelationIdObject, EmailSchema, NextClientRquestHeaders } from "@/src/types";
 import { useCsrfToken } from "@/lib/csrf/client";
 import {
   type OtpSendBody,
@@ -7,7 +7,6 @@ import {
   type OtpSendInternalServerErrorResponse,
   type OtpSendRateLimitErrorResponse,
   type OtpSendSuccessResponse,
-  type EmailSchema,
   path,
   method,
 } from "@/src/app/api/otp/send/route";

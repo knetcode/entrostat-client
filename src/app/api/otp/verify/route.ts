@@ -1,17 +1,16 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
 import { env } from "@/src/env.mjs";
-import { correlationIdSchema, emailSchema, type NextServerRquestHeaders } from "@/src/types";
+import { correlationIdSchema, otpSchema, type NextServerRquestHeaders } from "@/src/types";
 import { type paths } from "@/src/types/spec";
 
-export const path = "/api/otp/send";
+export const path = "/api/otp/verify";
 export const method = "post";
 
-export type OtpSendSuccessResponse = paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"];
-export type OtpSendErrorResponse = paths[typeof path][typeof method]["responses"]["400"]["content"]["application/json"];
-export type OtpSendInternalServerErrorResponse = paths[typeof path][typeof method]["responses"]["500"]["content"]["application/json"];
-export type OtpSendRateLimitErrorResponse = paths[typeof path][typeof method]["responses"]["429"]["content"]["application/json"];
-export type OtpSendBody = paths[typeof path][typeof method]["requestBody"]["content"]["application/json"];
+export type OtpVerifySuccessResponse = paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"];
+export type OtpVerifyErrorResponse = paths[typeof path][typeof method]["responses"]["400"]["content"]["application/json"];
+export type OtpVerifyInternalServerErrorResponse = paths[typeof path][typeof method]["responses"]["500"]["content"]["application/json"];
+export type OtpVerifyBody = paths[typeof path][typeof method]["requestBody"]["content"]["application/json"];
 
 export async function POST(request: NextRequest) {
   try {
@@ -27,7 +26,7 @@ export async function POST(request: NextRequest) {
     }
 
     const unsafeBody = (await request.json()) as unknown;
-    const body = emailSchema.safeParse(unsafeBody);
+    const body = otpSchema.safeParse(unsafeBody);
     if (!body.success) {
       return NextResponse.json(z.flattenError(body.error).fieldErrors, { status: 400 });
     }

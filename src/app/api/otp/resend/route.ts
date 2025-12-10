@@ -4,14 +4,13 @@ import { env } from "@/src/env.mjs";
 import { correlationIdSchema, emailSchema, type NextServerRquestHeaders } from "@/src/types";
 import { type paths } from "@/src/types/spec";
 
-export const path = "/api/otp/send";
+export const path = "/api/otp/resend";
 export const method = "post";
 
-export type OtpSendSuccessResponse = paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"];
-export type OtpSendErrorResponse = paths[typeof path][typeof method]["responses"]["400"]["content"]["application/json"];
-export type OtpSendInternalServerErrorResponse = paths[typeof path][typeof method]["responses"]["500"]["content"]["application/json"];
-export type OtpSendRateLimitErrorResponse = paths[typeof path][typeof method]["responses"]["429"]["content"]["application/json"];
-export type OtpSendBody = paths[typeof path][typeof method]["requestBody"]["content"]["application/json"];
+export type OtpResendSuccessResponse = paths[typeof path][typeof method]["responses"]["200"]["content"]["application/json"];
+export type OtpResendErrorResponse = paths[typeof path][typeof method]["responses"]["400"]["content"]["application/json"];
+export type OtpResendInternalServerErrorResponse = paths[typeof path][typeof method]["responses"]["500"]["content"]["application/json"];
+export type OtpResendBody = paths[typeof path][typeof method]["requestBody"]["content"]["application/json"];
 
 export async function POST(request: NextRequest) {
   try {

@@ -23,3 +23,19 @@ export type NextServerRquestHeaders = {
 export type CorrelationIdObject = {
   correlationId?: CorrelationIdString;
 };
+
+export const emailSchema = z.object({
+  email: z.email({ message: "Invalid email format" }).max(255, { message: "Email is too long" }).trim(),
+});
+
+export type EmailSchema = z.infer<typeof emailSchema>;
+
+export const otpSchema = z.object({
+  email: z.email({ message: "Invalid email format" }).max(255, { message: "Email is too long" }).trim(),
+  otp: z
+    .string({ message: "OTP is required" })
+    .trim()
+    .regex(/^\d{6}$/, { message: "OTP must be exactly 6 digits" }),
+});
+
+export type OtpSchema = z.infer<typeof otpSchema>;

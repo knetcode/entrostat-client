@@ -26,7 +26,7 @@ export async function proxy(request: NextRequest) {
     process.env.NODE_ENV === "production"
       ? `
         default-src 'self';
-        connect-src 'self';
+        connect-src 'self' https://entrostat-server.knetcode.com;
         script-src 'self' 'nonce-${nonce}';
         style-src 'self' https://fonts.googleapis.com;
         img-src 'self' data:;

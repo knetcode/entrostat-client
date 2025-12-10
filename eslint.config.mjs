@@ -14,6 +14,7 @@ const eslintConfig = defineConfig([
       "@typescript-eslint/consistent-type-definitions": ["error", "type"],
       "@typescript-eslint/consistent-type-imports": "warn",
       "import/order": "warn",
+      "react/no-children-prop": ["warn", { allowFunctions: true }],
     },
   },
 ]);

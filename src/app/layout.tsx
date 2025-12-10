@@ -1,6 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
+import { Toaster } from "@/src/components/ui/sonner";
 import "./globals.css";
-import { type ReactNode } from "react";
+
 import { Providers } from "@/src/components/providers";
 import { getCsrfTokenFromServer } from "@/lib/csrf/server";
 
@@ -27,11 +28,14 @@ export async function generateMetadata() {
   };
 }
 
-export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Providers>{children}</Providers>
+        <Providers>
+          {children}
+          <Toaster />
+        </Providers>
       </body>
     </html>
   );

@@ -10,10 +10,13 @@ export const env = createEnv({
     CSRF_SECRET: z.string(),
     CSRF_ALLOWED_ORIGINS: z.string(),
   },
-  client: {},
+  client: {
+    NEXT_PUBLIC_RESEND_COOLDOWN_SECONDS: z.string(),
+  },
   runtimeEnv: {
     BE_SERVER_URL: process.env.BE_SERVER_URL,
     CSRF_SECRET: process.env.CSRF_SECRET,
     CSRF_ALLOWED_ORIGINS: process.env.CSRF_ALLOWED_ORIGINS,
+    NEXT_PUBLIC_RESEND_COOLDOWN_SECONDS: process.env.NEXT_PUBLIC_RESEND_COOLDOWN_SECONDS,
   },
 });
