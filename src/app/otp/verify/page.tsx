@@ -1,10 +1,11 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, Suspense } from "react";
 import { useForm } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
+import { LoaderCircleIcon } from "lucide-react";
 import { otpSchema } from "@/src/types";
 import { useOtpVerify } from "@/src/hooks/use-otp-verify";
 import { useOtpResend } from "@/src/hooks/use-otp-resend";
@@ -14,7 +15,7 @@ import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/src
 import { OtpField } from "@/src/components/otp-field";
 import { env } from "@/src/env.mjs";
 
-export default function OtpVerifyPage() {
+function OtpVerifyContent() {
   const verifyOtp = useOtpVerify();
   const resendOtp = useOtpResend();
   const router = useRouter();
@@ -74,6 +75,7 @@ export default function OtpVerifyPage() {
           formApi.reset();
         },
         onError: (error) => {
+          formApi.setFieldValue("otp", "");
           toast.error(error.message);
         },
       });
@@ -104,33 +106,6 @@ export default function OtpVerifyPage() {
 
   if (verifyOtp.isPending) {
     return (
-      <div className="bg-background flex min-h-screen items-center justify-center p-4">
-        <div className="w-full max-w-md">
-          <div className="mb-8 text-center">
-            <h1 className="text-foreground mb-2 text-3xl font-bold">Verify Your OTP</h1>
-            <p className="text-foreground/60 text-sm">
-              Enter the 6-digit code sent to <span className="text-foreground font-medium">{email}</span>
-            </p>
-          </div>
-          <Card>
-            <CardHeader>
-              <CardTitle>Verifying OTP...</CardTitle>
-              <CardDescription>Please wait while we verify your code</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="flex flex-col items-center justify-center py-8">
-                <Spinner />
-                <p className="text-foreground/60 mt-4 text-sm">Verifying your code...</p>
-              </div>
-            </CardContent>
-          </Card>
-        </div>
-      </div>
-    );
-  }
-
-  return (
-    <div className="bg-background flex min-h-screen items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <h1 className="text-foreground mb-2 text-3xl font-bold">Verify Your OTP</h1>
@@ -140,50 +115,91 @@ export default function OtpVerifyPage() {
         </div>
         <Card>
           <CardHeader>
-            <CardTitle>OTP Verification</CardTitle>
-            <CardDescription>Please enter the OTP code you received via email</CardDescription>
+            <CardTitle>Verifying OTP...</CardTitle>
+            <CardDescription>Please wait while we verify your code</CardDescription>
           </CardHeader>
           <CardContent>
-            <form onSubmit={(e) => handleSubmit(e)} className="space-y-6">
-              <form.Field name="otp" children={(field) => <OtpField field={field} otpLength={6} />} />
-              <form.Subscribe
-                selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}
-                children={([canSubmit, isSubmitting, isDirty]) => (
-                  <div className="flex flex-col gap-3">
-                    <Button type="submit" disabled={!canSubmit || isSubmitting || !isDirty} className="w-full">
-                      {isSubmitting ? (
-                        <>
-                          <Spinner />
-                          Verifying...
-                        </>
-                      ) : (
-                        "Verify OTP"
-                      )}
-                    </Button>
-
-                    <Button type="button" variant="outline" onClick={handleResend} disabled={!canResend} className="w-full">
-                      {resendOtp.isPending ? (
-                        <>
-                          <Spinner />
-                          Resending...
-                        </>
-                      ) : cooldownSeconds > 0 ? (
-                        `Resend OTP in ${cooldownSeconds}s`
-                      ) : (
-                        "Resend OTP"
-                      )}
-                    </Button>
-
-                    <Button type="button" variant="ghost" onClick={() => router.push("/otp/send")} className="w-full">
-                      Use a different email
-                    </Button>
-                  </div>
-                )}
-              />
-            </form>
+            <div className="flex flex-col items-center justify-center py-8">
+              <Spinner />
+              <p className="text-foreground/60 mt-4 text-sm">Verifying your code...</p>
+            </div>
           </CardContent>
         </Card>
       </div>
+    );
+  }
+
+  return (
+    <div className="w-full max-w-md">
+      <div className="mb-8 text-center">
+        <h1 className="text-foreground mb-2 text-3xl font-bold">Verify Your OTP</h1>
+        <p className="text-foreground/60 text-sm">
+          Enter the 6-digit code sent to <span className="text-foreground font-medium">{email}</span>
+        </p>
+      </div>
+      <Card>
+        <CardHeader>
+          <CardTitle>OTP Verification</CardTitle>
+          <CardDescription>Please enter the OTP code you received via email</CardDescription>
+        </CardHeader>
+        <CardContent>
+          <form onSubmit={(e) => handleSubmit(e)} className="space-y-6">
+            <form.Field name="otp" children={(field) => <OtpField field={field} otpLength={6} />} />
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}
+              children={([canSubmit, isSubmitting, isDirty]) => (
+                <div className="flex flex-col gap-3">
+                  <Button type="submit" disabled={!canSubmit || isSubmitting || !isDirty} className="w-full">
+                    {isSubmitting ? (
+                      <>
+                        <Spinner />
+                        Verifying...
+                      </>
+                    ) : (
+                      "Verify OTP"
+                    )}
+                  </Button>
+
+                  <Button type="button" variant="outline" onClick={handleResend} disabled={!canResend} className="w-full">
+                    {resendOtp.isPending ? (
+                      <>
+                        <Spinner />
+                        Resending...
+                      </>
+                    ) : cooldownSeconds > 0 ? (
+                      `Resend OTP in ${cooldownSeconds}s`
+                    ) : (
+                      "Resend OTP"
+                    )}
+                  </Button>
+
+                  <Button type="button" variant="ghost" onClick={() => router.push("/otp/send")} className="w-full">
+                    Use a different email
+                  </Button>
+                </div>
+              )}
+            />
+          </form>
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
+function LoadingFallback() {
+  return (
+    <div className="flex items-center justify-center">
+      <LoaderCircleIcon className="text-primary h-8 w-8 animate-spin" />
+    </div>
+  );
+}
+
+export default function OtpVerifyPage() {
+  return (
+    <div className="bg-background flex min-h-screen items-center justify-center p-4">
+      <Suspense fallback={<LoadingFallback />}>
+        <OtpVerifyContent />
+      </Suspense>
     </div>
   );
 }

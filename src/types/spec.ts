@@ -370,7 +370,7 @@ export interface paths {
                 };
             };
             responses: {
-                /** @description Default Response */
+                /** @description Success response for verify OTP */
                 200: {
                     headers: {
                         [name: string]: unknown;
@@ -388,19 +388,6 @@ export interface paths {
                              */
                             valid: true;
                             /** @default OTP verified successfully */
-                            message: string;
-                        } | {
-                            /**
-                             * @default true
-                             * @enum {boolean}
-                             */
-                            success: true;
-                            /**
-                             * @default false
-                             * @enum {boolean}
-                             */
-                            valid: false;
-                            /** @default Invalid or expired OTP */
                             message: string;
                         };
                     };

@@ -528,74 +528,39 @@
         },
         "responses": {
           "200": {
-            "description": "Default Response",
+            "description": "Success response for verify OTP",
             "content": {
               "application/json": {
                 "schema": {
-                  "oneOf": [
-                    {
-                      "description": "Success response for verify OTP",
-                      "title": "Verify Success Response",
-                      "type": "object",
-                      "properties": {
-                        "success": {
-                          "default": true,
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "valid": {
-                          "default": true,
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "message": {
-                          "default": "OTP verified successfully",
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "success",
-                        "valid",
-                        "message"
-                      ],
-                      "additionalProperties": false
+                  "description": "Success response for verify OTP",
+                  "title": "Verify Success Response",
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "default": true,
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
                     },
-                    {
-                      "description": "Error response for verify OTP",
-                      "title": "Verify Error Response",
-                      "type": "object",
-                      "properties": {
-                        "success": {
-                          "default": true,
-                          "type": "boolean",
-                          "enum": [
-                            true
-                          ]
-                        },
-                        "valid": {
-                          "default": false,
-                          "type": "boolean",
-                          "enum": [
-                            false
-                          ]
-                        },
-                        "message": {
-                          "default": "Invalid or expired OTP",
-                          "type": "string"
-                        }
-                      },
-                      "required": [
-                        "success",
-                        "valid",
-                        "message"
-                      ],
-                      "additionalProperties": false
+                    "valid": {
+                      "default": true,
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "message": {
+                      "default": "OTP verified successfully",
+                      "type": "string"
                     }
-                  ]
+                  },
+                  "required": [
+                    "success",
+                    "valid",
+                    "message"
+                  ],
+                  "additionalProperties": false
                 }
               }
             }
