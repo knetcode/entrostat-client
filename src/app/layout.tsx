@@ -22,6 +22,15 @@ export async function generateMetadata() {
     title: "Entrostat - OTP Generator",
     description: "Entrostat - OTP Generator",
     icons: [{ rel: "icon", url: "/favicon.ico" }],
+    robots: {
+      index: false,
+      follow: false,
+      nocache: true,
+      googleBot: {
+        index: false,
+        follow: false,
+      },
+    },
     other: {
       "x-csrf-token": csrfToken ?? "",
     },
@@ -30,7 +39,7 @@ export async function generateMetadata() {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers>
           {children}

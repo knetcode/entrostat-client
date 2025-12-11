@@ -5,6 +5,7 @@ import { createCsrfProtect, handleCsrfInMiddleware } from "@/lib/csrf/server";
 const csrfProtect = createCsrfProtect({
   secret: env.CSRF_SECRET,
   allowedOrigins: env.CSRF_ALLOWED_ORIGINS,
+  ttlSeconds: 60 * 60 * 1, // 1 hour
 });
 
 export const config = {
@@ -28,7 +29,7 @@ export async function proxy(request: NextRequest) {
         default-src 'self';
         connect-src 'self' https://entrostat-server.knetcode.com;
         script-src 'self' 'nonce-${nonce}';
-        style-src 'self' https://fonts.googleapis.com;
+        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
         img-src 'self' data:;
         font-src 'self' data: https://fonts.gstatic.com;
         object-src 'none';

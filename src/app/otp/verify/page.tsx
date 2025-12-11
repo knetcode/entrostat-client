@@ -5,7 +5,7 @@ import { useForm } from "@tanstack/react-form";
 import { useQueryClient } from "@tanstack/react-query";
 import { redirect, useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { LoaderCircleIcon } from "lucide-react";
+import { LoaderCircleIcon, KeyRoundIcon } from "lucide-react";
 import { otpSchema } from "@/src/types";
 import { useOtpVerify } from "@/src/hooks/use-otp-verify";
 import { useOtpResend } from "@/src/hooks/use-otp-resend";
@@ -22,6 +22,7 @@ function OtpVerifyContent() {
   const queryClient = useQueryClient();
   const searchParams = useSearchParams();
   const email = searchParams.get("email");
+  const correlationId = searchParams.get("correlationId");
 
   const [cooldownSeconds, setCooldownSeconds] = useState(Number(env.NEXT_PUBLIC_RESEND_COOLDOWN_SECONDS));
 
@@ -35,11 +36,11 @@ function OtpVerifyContent() {
     }
   }, [email, queryClient, router]);
 
-  const handleResend = useCallback(async () => {
+  const handleResend = useCallback(() => {
     if (!email || cooldownSeconds > 0 || resendOtp.isPending) return;
 
-    await resendOtp.mutateAsync(
-      { email },
+    resendOtp.mutate(
+      { email, correlationId: correlationId! },
       {
         onSuccess: () => {
           queryClient.setQueryData(["otp-send-success", email], {
@@ -54,7 +55,7 @@ function OtpVerifyContent() {
         },
       }
     );
-  }, [email, cooldownSeconds, resendOtp, queryClient]);
+  }, [email, cooldownSeconds, resendOtp, queryClient, correlationId]);
 
   const form = useForm({
     defaultValues: {
@@ -65,20 +66,23 @@ function OtpVerifyContent() {
       onChange: otpSchema,
     },
     onSubmit: async ({ formApi, value }) => {
-      await verifyOtp.mutateAsync(value, {
-        onSuccess: () => {
-          queryClient.setQueryData(["otp-verify-success", email], {
-            email: email!,
-            timestamp: Date.now(),
-          });
-          router.replace(`/otp/success?email=${email}`);
-          formApi.reset();
-        },
-        onError: (error) => {
-          formApi.setFieldValue("otp", "");
-          toast.error(error.message);
-        },
-      });
+      verifyOtp.mutate(
+        { email: value.email, otp: value.otp, correlationId: correlationId! },
+        {
+          onSuccess: (data) => {
+            queryClient.setQueryData(["otp-verify-success", email], {
+              email: email!,
+              timestamp: Date.now(),
+            });
+            router.replace(`/otp/success?correlationId=${data.correlationId}&email=${email}`);
+            formApi.reset();
+          },
+          onError: (error) => {
+            formApi.setFieldValue("otp", "");
+            toast.error(error.message);
+          },
+        }
+      );
     },
   });
 
@@ -92,7 +96,7 @@ function OtpVerifyContent() {
     return () => clearInterval(timer);
   }, [cooldownSeconds]);
 
-  if (!email) {
+  if (!email || !correlationId) {
     return redirect("/otp/send");
   }
 
@@ -108,12 +112,17 @@ function OtpVerifyContent() {
     return (
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
-          <h1 className="text-foreground mb-2 text-3xl font-bold">Verify Your OTP</h1>
-          <p className="text-foreground/60 text-sm">
-            Enter the 6-digit code sent to <span className="text-foreground font-medium">{email}</span>
+          <div className="mb-4 flex justify-center">
+            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+              <LoaderCircleIcon className="h-8 w-8 animate-spin text-white" />
+            </div>
+          </div>
+          <h1 className="mb-2 text-3xl font-bold text-white">Verify Your OTP</h1>
+          <p className="text-sm text-white/90">
+            Enter the 6-digit code sent to <span className="font-medium text-white">{email}</span>
           </p>
         </div>
-        <Card>
+        <Card className="shadow-lg">
           <CardHeader>
             <CardTitle>Verifying OTP...</CardTitle>
             <CardDescription>Please wait while we verify your code</CardDescription>
@@ -132,12 +141,17 @@ function OtpVerifyContent() {
   return (
     <div className="w-full max-w-md">
       <div className="mb-8 text-center">
-        <h1 className="text-foreground mb-2 text-3xl font-bold">Verify Your OTP</h1>
-        <p className="text-foreground/60 text-sm">
-          Enter the 6-digit code sent to <span className="text-foreground font-medium">{email}</span>
+        <div className="mb-4 flex justify-center">
+          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
+            <KeyRoundIcon className="h-8 w-8 text-white" />
+          </div>
+        </div>
+        <h1 className="mb-2 text-3xl font-bold text-white">Verify Your OTP</h1>
+        <p className="text-sm text-white/90">
+          Enter the 6-digit code sent to <span className="font-medium text-white">{email}</span>
         </p>
       </div>
-      <Card>
+      <Card className="shadow-lg">
         <CardHeader>
           <CardTitle>OTP Verification</CardTitle>
           <CardDescription>Please enter the OTP code you received via email</CardDescription>
@@ -196,10 +210,14 @@ function LoadingFallback() {
 
 export default function OtpVerifyPage() {
   return (
-    <div className="bg-background flex min-h-screen items-center justify-center p-4">
-      <Suspense fallback={<LoadingFallback />}>
-        <OtpVerifyContent />
-      </Suspense>
+    <div className="relative flex min-h-screen items-center justify-center p-4">
+      <div className="absolute inset-0 bg-gradient-to-br from-[#667eea] to-[#764ba2]" />
+      <div className="bg-grid-white/[0.05] absolute inset-0 bg-[size:20px_20px]" />
+      <div className="relative">
+        <Suspense fallback={<LoadingFallback />}>
+          <OtpVerifyContent />
+        </Suspense>
+      </div>
     </div>
   );
 }

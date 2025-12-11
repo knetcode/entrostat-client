@@ -87,6 +87,11 @@ export interface paths {
                             success: true;
                             /** @default OTP sent successfully */
                             message: string;
+                            /**
+                             * Format: uuid
+                             * @default 0d518202-dd66-4b75-b1c9-d31937d473d6
+                             */
+                            correlationId: string;
                         };
                     };
                 };
@@ -102,7 +107,7 @@ export interface paths {
                              * @enum {boolean}
                              */
                             success: false;
-                            /** @default Invalid email format */
+                            /** @default Please enter a valid email address */
                             message: string;
                             /**
                              * @default [
@@ -124,9 +129,14 @@ export interface paths {
                                  *     ]
                                  */
                                 path: string[];
-                                /** @default Invalid email format */
+                                /** @default Please enter a valid email address */
                                 message: string;
                             }[];
+                            /**
+                             * Format: uuid
+                             * @default 5351c05a-923a-4354-b85c-dc57a5d30c27
+                             */
+                            correlationId: string;
                         };
                     };
                 };
@@ -144,6 +154,11 @@ export interface paths {
                             success: false;
                             /** @default Rate limit exceeded */
                             message: string;
+                            /**
+                             * Format: uuid
+                             * @default dae5a8ca-f7f5-48e7-8954-33f79ceb66a1
+                             */
+                            correlationId: string;
                         };
                     };
                 };
@@ -159,7 +174,7 @@ export interface paths {
                              * @enum {boolean}
                              */
                             success: false;
-                            /** @default Invalid email format */
+                            /** @default Please enter a valid email address */
                             message: string;
                             /**
                              * @default [
@@ -181,9 +196,14 @@ export interface paths {
                                  *     ]
                                  */
                                 path: string[];
-                                /** @default Invalid email format */
+                                /** @default Please enter a valid email address */
                                 message: string;
                             }[];
+                            /**
+                             * Format: uuid
+                             * @default 5351c05a-923a-4354-b85c-dc57a5d30c27
+                             */
+                            correlationId: string;
                         };
                     };
                 };
@@ -241,6 +261,11 @@ export interface paths {
                             success: true;
                             /** @default OTP sent successfully */
                             message: string;
+                            /**
+                             * Format: uuid
+                             * @default 0d518202-dd66-4b75-b1c9-d31937d473d6
+                             */
+                            correlationId: string;
                         };
                     };
                 };
@@ -256,7 +281,7 @@ export interface paths {
                              * @enum {boolean}
                              */
                             success: false;
-                            /** @default Invalid email format */
+                            /** @default Please enter a valid email address */
                             message: string;
                             /**
                              * @default [
@@ -278,9 +303,14 @@ export interface paths {
                                  *     ]
                                  */
                                 path: string[];
-                                /** @default Invalid email format */
+                                /** @default Please enter a valid email address */
                                 message: string;
                             }[];
+                            /**
+                             * Format: uuid
+                             * @default 5351c05a-923a-4354-b85c-dc57a5d30c27
+                             */
+                            correlationId: string;
                         };
                     };
                 };
@@ -296,7 +326,7 @@ export interface paths {
                              * @enum {boolean}
                              */
                             success: false;
-                            /** @default Invalid email format */
+                            /** @default Please enter a valid email address */
                             message: string;
                             /**
                              * @default [
@@ -318,9 +348,14 @@ export interface paths {
                                  *     ]
                                  */
                                 path: string[];
-                                /** @default Invalid email format */
+                                /** @default Please enter a valid email address */
                                 message: string;
                             }[];
+                            /**
+                             * Format: uuid
+                             * @default 5351c05a-923a-4354-b85c-dc57a5d30c27
+                             */
+                            correlationId: string;
                         };
                     };
                 };
@@ -389,6 +424,11 @@ export interface paths {
                             valid: true;
                             /** @default OTP verified successfully */
                             message: string;
+                            /**
+                             * Format: uuid
+                             * @default bc1defee-8f94-4d1c-89c0-c946f79364d0
+                             */
+                            correlationId: string;
                         };
                     };
                 };
@@ -404,7 +444,7 @@ export interface paths {
                              * @enum {boolean}
                              */
                             success: false;
-                            /** @default Invalid email format */
+                            /** @default Please enter a valid email address */
                             message: string;
                             /**
                              * @default [
@@ -426,9 +466,14 @@ export interface paths {
                                  *     ]
                                  */
                                 path: string[];
-                                /** @default Invalid email format */
+                                /** @default Please enter a valid email address */
                                 message: string;
                             }[];
+                            /**
+                             * Format: uuid
+                             * @default 5351c05a-923a-4354-b85c-dc57a5d30c27
+                             */
+                            correlationId: string;
                         };
                     };
                 };
@@ -444,7 +489,7 @@ export interface paths {
                              * @enum {boolean}
                              */
                             success: false;
-                            /** @default Invalid email format */
+                            /** @default Please enter a valid email address */
                             message: string;
                             /**
                              * @default [
@@ -466,9 +511,79 @@ export interface paths {
                                  *     ]
                                  */
                                 path: string[];
-                                /** @default Invalid email format */
+                                /** @default Please enter a valid email address */
                                 message: string;
                             }[];
+                            /**
+                             * Format: uuid
+                             * @default 5351c05a-923a-4354-b85c-dc57a5d30c27
+                             */
+                            correlationId: string;
+                        };
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/error-log": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /** @description Log an error for debugging and production support */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody: {
+                content: {
+                    "application/json": {
+                        /** Format: uuid */
+                        correlationId: string;
+                        /** Format: email */
+                        email?: string;
+                        errorMessage: string;
+                        errorType?: string;
+                        errorStack?: string;
+                        requestPath?: string;
+                        requestMethod?: string;
+                    };
+                };
+            };
+            responses: {
+                /** @description Default Response */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            success?: boolean;
+                            message?: string;
+                        };
+                    };
+                };
+                /** @description Default Response */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": {
+                            success?: boolean;
+                            message?: string;
                         };
                     };
                 };

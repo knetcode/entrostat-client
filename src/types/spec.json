@@ -82,6 +82,12 @@
                     "message": {
                       "default": "OTP sent successfully",
                       "type": "string"
+                    },
+                    "correlationId": {
+                      "default": "0d518202-dd66-4b75-b1c9-d31937d473d6",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -110,7 +116,7 @@
                       ]
                     },
                     "message": {
-                      "default": "Invalid email format",
+                      "default": "Please enter a valid email address",
                       "type": "string"
                     },
                     "errors": {
@@ -143,7 +149,7 @@
                             }
                           },
                           "message": {
-                            "default": "Invalid email format",
+                            "default": "Please enter a valid email address",
                             "type": "string"
                           }
                         },
@@ -154,6 +160,12 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "correlationId": {
+                      "default": "5351c05a-923a-4354-b85c-dc57a5d30c27",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -185,6 +197,12 @@
                     "message": {
                       "default": "Rate limit exceeded",
                       "type": "string"
+                    },
+                    "correlationId": {
+                      "default": "dae5a8ca-f7f5-48e7-8954-33f79ceb66a1",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -213,7 +231,7 @@
                       ]
                     },
                     "message": {
-                      "default": "Invalid email format",
+                      "default": "Please enter a valid email address",
                       "type": "string"
                     },
                     "errors": {
@@ -246,7 +264,7 @@
                             }
                           },
                           "message": {
-                            "default": "Invalid email format",
+                            "default": "Please enter a valid email address",
                             "type": "string"
                           }
                         },
@@ -257,6 +275,12 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "correlationId": {
+                      "default": "5351c05a-923a-4354-b85c-dc57a5d30c27",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -324,6 +348,12 @@
                     "message": {
                       "default": "OTP sent successfully",
                       "type": "string"
+                    },
+                    "correlationId": {
+                      "default": "0d518202-dd66-4b75-b1c9-d31937d473d6",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -352,7 +382,7 @@
                       ]
                     },
                     "message": {
-                      "default": "Invalid email format",
+                      "default": "Please enter a valid email address",
                       "type": "string"
                     },
                     "errors": {
@@ -385,7 +415,7 @@
                             }
                           },
                           "message": {
-                            "default": "Invalid email format",
+                            "default": "Please enter a valid email address",
                             "type": "string"
                           }
                         },
@@ -396,6 +426,12 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "correlationId": {
+                      "default": "5351c05a-923a-4354-b85c-dc57a5d30c27",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -425,7 +461,7 @@
                       ]
                     },
                     "message": {
-                      "default": "Invalid email format",
+                      "default": "Please enter a valid email address",
                       "type": "string"
                     },
                     "errors": {
@@ -458,7 +494,7 @@
                             }
                           },
                           "message": {
-                            "default": "Invalid email format",
+                            "default": "Please enter a valid email address",
                             "type": "string"
                           }
                         },
@@ -469,6 +505,12 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "correlationId": {
+                      "default": "5351c05a-923a-4354-b85c-dc57a5d30c27",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -553,6 +595,12 @@
                     "message": {
                       "default": "OTP verified successfully",
                       "type": "string"
+                    },
+                    "correlationId": {
+                      "default": "bc1defee-8f94-4d1c-89c0-c946f79364d0",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -582,7 +630,7 @@
                       ]
                     },
                     "message": {
-                      "default": "Invalid email format",
+                      "default": "Please enter a valid email address",
                       "type": "string"
                     },
                     "errors": {
@@ -615,7 +663,7 @@
                             }
                           },
                           "message": {
-                            "default": "Invalid email format",
+                            "default": "Please enter a valid email address",
                             "type": "string"
                           }
                         },
@@ -626,6 +674,12 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "correlationId": {
+                      "default": "5351c05a-923a-4354-b85c-dc57a5d30c27",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -655,7 +709,7 @@
                       ]
                     },
                     "message": {
-                      "default": "Invalid email format",
+                      "default": "Please enter a valid email address",
                       "type": "string"
                     },
                     "errors": {
@@ -688,7 +742,7 @@
                             }
                           },
                           "message": {
-                            "default": "Invalid email format",
+                            "default": "Please enter a valid email address",
                             "type": "string"
                           }
                         },
@@ -699,6 +753,12 @@
                         ],
                         "additionalProperties": false
                       }
+                    },
+                    "correlationId": {
+                      "default": "5351c05a-923a-4354-b85c-dc57a5d30c27",
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
                     }
                   },
                   "required": [
@@ -707,6 +767,96 @@
                     "errors"
                   ],
                   "additionalProperties": false
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/error-log": {
+      "post": {
+        "tags": [
+          "Error Log"
+        ],
+        "description": "Log an error for debugging and production support",
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "correlationId",
+                  "errorMessage"
+                ],
+                "properties": {
+                  "correlationId": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "email": {
+                    "type": "string",
+                    "format": "email"
+                  },
+                  "errorMessage": {
+                    "type": "string",
+                    "maxLength": 1000
+                  },
+                  "errorType": {
+                    "type": "string",
+                    "maxLength": 255
+                  },
+                  "errorStack": {
+                    "type": "string",
+                    "maxLength": 5000
+                  },
+                  "requestPath": {
+                    "type": "string",
+                    "maxLength": 500
+                  },
+                  "requestMethod": {
+                    "type": "string",
+                    "maxLength": 10
+                  }
+                }
+              }
+            }
+          },
+          "required": true
+        },
+        "responses": {
+          "200": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Default Response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "success": {
+                      "type": "boolean"
+                    },
+                    "message": {
+                      "type": "string"
+                    }
+                  }
                 }
               }
             }

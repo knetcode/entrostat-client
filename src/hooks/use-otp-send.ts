@@ -10,12 +10,20 @@ import {
   path,
   method,
 } from "@/src/app/api/otp/send/route";
+import { useClientErrorLogger } from "@/src/hooks/use-error-logger";
 
 export function useOtpSend() {
   const { csrfToken } = useCsrfToken();
 
+  const { logClientError } = useClientErrorLogger({
+    requestPath: path,
+    requestMethod: method.toUpperCase(),
+    operation: "OTP send",
+  });
+
   async function apiCall({ correlationId, email }: CorrelationIdObject & EmailSchema) {
     const requestUrl = `${path}`;
+    const finalCorrelationId = correlationId ?? crypto.randomUUID();
 
     const requestHeaders: NextClientRquestHeaders = {
       accept: "application/json",
@@ -42,20 +50,61 @@ export function useOtpSend() {
         return data;
       } else if (response.status === 400) {
         const data = (await response.json()) as OtpSendErrorResponse;
-        throw new Error(data.message);
+        const error = new Error(data.message);
+
+        void logClientError({
+          error: response,
+          correlationId: data.correlationId ?? finalCorrelationId,
+          email,
+          message: data.message,
+        });
+
+        throw error;
       } else if (response.status === 429) {
         const data = (await response.json()) as OtpSendRateLimitErrorResponse;
-        throw new Error(data.message);
+        const error = new Error(data.message);
+
+        void logClientError({
+          error: response,
+          correlationId: data.correlationId ?? finalCorrelationId,
+          email,
+          message: data.message,
+        });
+
+        throw error;
       } else if (response.status === 500) {
         const data = (await response.json()) as OtpSendInternalServerErrorResponse;
-        throw new Error(data.message);
-      }
-      throw new Error(`Unexpected status code: ${response.status}`);
-    } catch (error) {
-      if (error instanceof Error) {
+        const error = new Error(data.message);
+
+        void logClientError({
+          error: response,
+          correlationId: data.correlationId ?? finalCorrelationId,
+          email,
+          message: data.message,
+        });
+
         throw error;
       }
-      throw new Error(`An unknown error occurred: ${error}`);
+      const error = new Error("Something went wrong. Please try again in a moment.");
+
+      void logClientError({
+        error: response,
+        correlationId: finalCorrelationId,
+        email,
+      });
+      throw error;
+    } catch (error) {
+      if (error instanceof Error && error.message !== "Something went wrong. Please try again in a moment.") {
+        throw error;
+      }
+
+      void logClientError({
+        error,
+        correlationId: finalCorrelationId,
+        email,
+        requestUrl,
+      });
+      throw new Error("An unexpected error occurred. Please try again.");
     }
   }
 

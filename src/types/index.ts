@@ -25,17 +25,17 @@ export type CorrelationIdObject = {
 };
 
 export const emailSchema = z.object({
-  email: z.email({ message: "Invalid email format" }).max(255, { message: "Email is too long" }).trim(),
+  email: z.email({ message: "Please enter a valid email address" }).max(255, { message: "Email is too long" }).trim(),
 });
 
 export type EmailSchema = z.infer<typeof emailSchema>;
 
 export const otpSchema = z.object({
-  email: z.email({ message: "Invalid email format" }).max(255, { message: "Email is too long" }).trim(),
+  email: z.email({ message: "Please enter a valid email address" }).max(255, { message: "Email is too long" }).trim(),
   otp: z
-    .string({ message: "OTP is required" })
+    .string({ error: "Please enter your OTP code" })
     .trim()
-    .regex(/^\d{6}$/, { message: "OTP must be exactly 6 digits" }),
+    .regex(/^\d{6}$/, { error: "Please enter a 6-digit code" }),
 });
 
 export type OtpSchema = z.infer<typeof otpSchema>;

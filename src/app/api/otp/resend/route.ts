@@ -1,5 +1,6 @@
 import { type NextRequest, NextResponse } from "next/server";
 import { z } from "zod";
+import { serverLogErrorToApi } from "../../error-log/route";
 import { env } from "@/src/env.mjs";
 import { correlationIdSchema, emailSchema, type NextServerRquestHeaders } from "@/src/types";
 import { type paths } from "@/src/types/spec";
@@ -13,11 +14,12 @@ export type OtpResendInternalServerErrorResponse = paths[typeof path][typeof met
 export type OtpResendBody = paths[typeof path][typeof method]["requestBody"]["content"]["application/json"];
 
 export async function POST(request: NextRequest) {
+  const requestUrl = `${env.BE_SERVER_URL}${path}`;
+
   try {
-    // Validations
     const unsafeCorrelationId = request.headers.get("correlationId");
     if (unsafeCorrelationId === null) {
-      return NextResponse.json({ message: "Error: Correlation ID is required", success: false }, { status: 400 });
+      return NextResponse.json({ message: "Invalid request. Please refresh the page and try again.", success: false }, { status: 400 });
     }
 
     const correlationId = correlationIdSchema.safeParse(unsafeCorrelationId);
@@ -30,8 +32,6 @@ export async function POST(request: NextRequest) {
     if (!body.success) {
       return NextResponse.json(z.flattenError(body.error).fieldErrors, { status: 400 });
     }
-
-    const requestUrl = `${env.BE_SERVER_URL}${path}`;
 
     const requestHeaders: NextServerRquestHeaders = {
       accept: "application/json",
@@ -51,12 +51,31 @@ export async function POST(request: NextRequest) {
       const data = (await response.json()) as unknown;
       return NextResponse.json(data, { status: response.status });
     } catch (error) {
-      return NextResponse.json({ success: false, message: "Invalid response from server" }, { status: 500 });
+      void serverLogErrorToApi({
+        error,
+        correlationId: correlationId.data,
+        email: body.data.email,
+        requestPath: path,
+        requestMethod: method.toUpperCase(),
+        operation: "OTP resend API",
+        response,
+      });
+
+      return NextResponse.json(
+        { success: false, message: "There was an error processing the response. Please try again in a moment." },
+        { status: 500 }
+      );
     }
   } catch (error) {
-    if (error instanceof Error) {
-      return NextResponse.json({ success: false, message: error.message }, { status: 500 });
-    }
-    return NextResponse.json({ success: false, message: "An unknown error occurred" }, { status: 500 });
+    void serverLogErrorToApi({
+      error,
+      correlationId: crypto.randomUUID(),
+      requestPath: path,
+      requestMethod: method.toUpperCase(),
+      operation: "OTP resend API route",
+      backendUrl: requestUrl,
+    });
+
+    return NextResponse.json({ success: false, message: "Something went wrong. Please try again in a moment." }, { status: 500 });
   }
 }
