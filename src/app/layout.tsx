@@ -1,7 +1,6 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import { Toaster } from "@/src/components/ui/sonner";
 import "./globals.css";
-
 import { Providers } from "@/src/components/providers";
 import { getCsrfTokenFromServer } from "@/lib/csrf/server";
 
@@ -37,7 +36,7 @@ export async function generateMetadata() {
   };
 }
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default async function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>

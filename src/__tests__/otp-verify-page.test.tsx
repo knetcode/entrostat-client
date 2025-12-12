@@ -178,7 +178,7 @@ describe("OTP Verify Page", () => {
     it("should display instructions for entering OTP", () => {
       renderPage();
 
-      expect(screen.getByText(/please enter your OTP code/i)).toBeInTheDocument();
+      expect(screen.getByText(/please enter the OTP code you received via email/i)).toBeInTheDocument();
     });
   });
 

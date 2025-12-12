@@ -13,38 +13,85 @@ export default function Home() {
   const router = useRouter();
 
   const testRequirements: Point[] = [
-    {
-      point: "6-digit OTP codes that can start with 0",
-    },
-    {
-      point: "Rate limiting: Maximum 3 requests per hour",
-    },
-    {
-      point: "30-second expiration window",
-    },
-    {
-      point: "24-hour OTP uniqueness guarantee",
-    },
-    {
-      point: "One-time use only - OTPs cannot be reused",
-    },
+    { point: "6-digit OTP codes that can start with 0" },
+    { point: "Rate limiting: Maximum 3 requests per hour" },
+    { point: "30-second expiration window" },
+    { point: "24-hour OTP uniqueness guarantee" },
+    { point: "One-time use only - OTPs cannot be reused" },
   ];
 
   const aboutThisProject: Point[] = [
     {
-      point: "Built with a modern tech stack: Fastify backend, Next.js 16 frontend, and PostgreSQL database",
+      point:
+        "Architecture: Built with a BFF (Backend-For-Frontend) pattern — the Next.js server acts as a secure proxy to the Fastify API. This means the Fastify backend is never directly exposed to the public internet, adding an extra layer of protection.",
     },
     {
-      point: "Implements industry-standard security practices including rate limiting, constant-time OTP comparison, and CSRF protection",
+      point:
+        "Contract-Driven Development: OpenAPI spec is auto-generated from the Fastify backend and used to generate TypeScript types for the frontend, ensuring type-safety across the entire stack and catching integration issues at compile time.",
     },
     {
-      point: "Features a complete CI/CD pipeline with automated testing and containerized deployment",
+      point:
+        "Security - CSRF Protection: Implemented a custom CSRF protection system with HMAC-SHA256 signed tokens, constant-time comparison to prevent timing attacks, configurable TTL, and a grace period for token rotation to prevent race conditions.",
     },
     {
-      point: "Email delivery powered by Resend for reliable and beautiful OTP emails",
+      point:
+        "Security - OTP Verification: Uses constant-time string comparison when verifying OTPs to prevent timing attacks — a common vulnerability in authentication systems that's often overlooked.",
     },
     {
-      point: "Clean architecture with separation of concerns: services, routes, and data layers",
+      point:
+        "Security - Defense in Depth: Configured strict Content Security Policy (CSP), Cross-Origin-Embedder-Policy (COEP), Cross-Origin-Opener-Policy (COOP), and Permissions-Policy headers. OTPs are never returned in API responses.",
+    },
+    {
+      point:
+        "Security - Rate Limiting & Uniqueness: Database-backed rate limiting (max 3 requests/hour per email), 24-hour OTP uniqueness guarantee, and automatic invalidation of old OTPs when new ones are generated.",
+    },
+    {
+      point:
+        "Testing: Test suites on both backend (Vitest) and frontend (Jest) — including unit tests for hooks, integration tests for API routes, and end-to-end flow tests. Tests use database cleanup utilities to ensure isolation.",
+    },
+    {
+      point:
+        "Observability: Every request is tagged with a correlationId that flows through the entire system — from frontend to backend to database. Errors are persisted to an error_logs table with full context, making production debugging much easier.",
+    },
+    {
+      point:
+        "Database: Using Drizzle ORM for type-safe database queries with a SQL-like syntax. Schema includes proper indexing on frequently queried columns (email, correlationId, createdAt) for optimal query performance.",
+    },
+    {
+      point:
+        "DevOps: Dockerized deployment with standalone Next.js output for smaller image sizes. Makefile included for local Docker testing (I use Colima instead of Docker Desktop). Currently deployed on my personal VPS.",
+    },
+    {
+      point:
+        "Package Management: Using pnpm instead of npm — it's faster, saves disk space via hard links, and blocks pre/post-install scripts by default, which is crucial given the recent supply chain attacks in the JS ecosystem.",
+    },
+    {
+      point:
+        "UI/UX: Built with shadcn/ui components which provide accessibility out of the box (ARIA attributes, keyboard navigation) without locking you into a specific design system.",
+    },
+    {
+      point:
+        "State Management: TanStack Query handles async state with automatic caching, background refetching, and optimistic updates. Query state is also used to implement page guards — preventing users from accessing /verify or /success pages without completing prior steps.",
+    },
+    {
+      point:
+        "Environment Validation: Using @t3-oss/env-nextjs with Zod schemas to validate environment variables at build time — no more runtime crashes from missing env vars in production.",
+    },
+    {
+      point:
+        "Code Quality: Strict TypeScript config, ESLint with modern flat config, and Prettier for consistent formatting. All enforced across both client and server packages.",
+    },
+    {
+      point:
+        "Privacy: Site is configured with robots noindex/nofollow to prevent search engine indexing — this is a test project that shouldn't appear in search results.",
+    },
+    {
+      point:
+        "Real Email Delivery: Integrated with Resend for production email delivery — you'll receive actual OTP emails in real-time. For local development, set SKIP_EMAIL=true to log OTPs to console instead.",
+    },
+    {
+      point:
+        "ENV VARS: I'll send the .env files needed to run this locally via email. All credentials will be revoked and resources shutdown on 2025/12/20.",
     },
   ];
 
@@ -73,7 +120,6 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Content Section */}
       <div className="container mx-auto px-4 py-16">
         <div className="mb-16">
           <div className="mb-16">

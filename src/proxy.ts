@@ -24,25 +24,25 @@ export async function proxy(request: NextRequest) {
   const nonce = Buffer.from(crypto.randomUUID()).toString("base64");
 
   const cspHeader =
-    process.env.NODE_ENV === "production"
-      ? `
-        default-src 'self';
-        connect-src 'self' https://entrostat-server.knetcode.com;
-        script-src 'self' 'nonce-${nonce}';
-        style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
-        img-src 'self' data:;
-        font-src 'self' data: https://fonts.gstatic.com;
-        object-src 'none';
-        base-uri 'self';
-        form-action 'self';
-        frame-ancestors 'none';
-        upgrade-insecure-requests;
-        `
-      : "";
+    process.env.NODE_ENV === "development"
+      ? ""
+      : `
+    default-src 'self';
+    connect-src 'self' https://entrostat-server.knetcode.com;
+    script-src 'self' 'nonce-${nonce}' 'strict-dynamic' 'sha256-osMMQj3FsFuFoINhDY6u/ERO7gP52tI8DTruJmDXHD8=';
+    style-src 'self' 'unsafe-inline' https://fonts.googleapis.com;
+    img-src 'self' blob: data:;
+    font-src 'self' data: https://fonts.gstatic.com;
+    object-src 'none';
+    base-uri 'self';
+    form-action 'self';
+    frame-ancestors 'none';
+    upgrade-insecure-requests;
+  `;
 
   const contentSecurityPolicyHeaderValue = cspHeader.replace(/\s{2,}/g, " ").trim();
-  const requestHeaders = new Headers(request.headers);
 
+  const requestHeaders = new Headers(request.headers);
   requestHeaders.set("x-nonce", nonce);
   requestHeaders.set("Content-Security-Policy", contentSecurityPolicyHeaderValue);
 
