@@ -40,7 +40,7 @@ function OtpSuccessContent() {
         <h1 className="mb-2 text-3xl font-semibold tracking-tight text-white">Verification Successful</h1>
         <p className="text-sm text-white/80">Your OTP has been successfully verified</p>
       </div>
-      <Card className="glass-card">
+      <Card className="glass-card border-white/15 bg-white/5 shadow-2xl shadow-black/40 backdrop-blur-xl">
         <CardHeader className="text-center">
           <CardTitle>OTP Verified Successfully</CardTitle>
           <CardDescription>

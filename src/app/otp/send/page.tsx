@@ -60,7 +60,7 @@ export default function OtpSendPage() {
           <h1 className="mb-2 text-3xl font-semibold tracking-tight text-white">Enter Your Email</h1>
           <p className="text-sm text-white/80">We&apos;ll send you a one-time password to verify your account</p>
         </div>
-        <Card className="glass-card">
+        <Card className="glass-card border-white/15 bg-white/5 shadow-2xl shadow-black/40 backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Request OTP</CardTitle>
             <CardDescription>Enter your email address to receive a one-time password</CardDescription>

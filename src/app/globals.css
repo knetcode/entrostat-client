@@ -142,7 +142,10 @@
   }
 
   .glass-card {
-    @apply border-white/60 bg-white/95 shadow-2xl shadow-black/20 backdrop-blur-xl;
+    background: oklch(0.22 0.025 275 / 0.72);
+    border-color: oklch(1 0 0 / 0.16);
+    box-shadow: 0 24px 60px -20px rgb(0 0 0 / 0.55);
+    backdrop-filter: blur(18px);
   }
 }
 

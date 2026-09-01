@@ -123,7 +123,7 @@ function OtpVerifyContent() {
             Enter the 6-digit code sent to <span className="font-medium text-white">{email}</span>
           </p>
         </div>
-        <Card className="glass-card">
+        <Card className="glass-card border-white/15 bg-white/5 shadow-2xl shadow-black/40 backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Verifying OTP...</CardTitle>
             <CardDescription>Please wait while we verify your code</CardDescription>
@@ -152,7 +152,7 @@ function OtpVerifyContent() {
           Enter the 6-digit code sent to <span className="font-medium text-white">{email}</span>
         </p>
       </div>
-      <Card className="glass-card">
+      <Card className="glass-card border-white/15 bg-white/5 shadow-2xl shadow-black/40 backdrop-blur-xl">
         <CardHeader>
           <CardTitle>OTP Verification</CardTitle>
           <CardDescription>Please enter the OTP code you received via email</CardDescription>
