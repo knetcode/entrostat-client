@@ -1,17 +1,24 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { ShieldCheckIcon, MailIcon, KeyRoundIcon, ArrowRightIcon, HelpCircleIcon } from "lucide-react";
+import Link from "next/link";
+import { ShieldCheckIcon, MailIcon, KeyRoundIcon, ArrowRightIcon, CheckCircle2Icon, HelpCircleIcon } from "lucide-react";
 import { Button } from "@/src/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/src/components/ui/card";
+import { SiteHeader } from "@/src/components/site-header";
 
 type Point = {
   point: string;
 };
 
-export default function Home() {
-  const router = useRouter();
+function splitPoint(point: string): { label: string; body: string } {
+  const index = point.indexOf(": ");
+  if (index === -1) {
+    return { label: "Note", body: point };
+  }
+  return { label: point.slice(0, index), body: point.slice(index + 2) };
+}
 
+export default function Home() {
   const testRequirements: Point[] = [
     { point: "6-digit OTP codes that can start with 0" },
     { point: "Rate limiting: Maximum 3 requests per hour" },
@@ -95,109 +102,140 @@ export default function Home() {
     },
   ];
 
+  const steps = [
+    {
+      icon: MailIcon,
+      title: "1. Request OTP",
+      description: "Enter your email address to receive a secure 6-digit one-time password.",
+    },
+    {
+      icon: KeyRoundIcon,
+      title: "2. Enter Code",
+      description: "Check your email and enter the 6-digit OTP code you received.",
+    },
+    {
+      icon: ShieldCheckIcon,
+      title: "3. Verify",
+      description: "Submit the code to verify your OTP.",
+    },
+  ];
+
   return (
     <div className="bg-background min-h-screen">
-      <div className="relative overflow-hidden bg-gradient-to-br from-[#667eea] to-[#764ba2] py-24">
-        <div className="bg-grid-white/[0.05] absolute inset-0 bg-[size:20px_20px]" />
-        <div className="relative container mx-auto px-4">
-          <div className="text-center">
+      <section className="relative overflow-hidden">
+        <div className="mesh-bg absolute inset-0" />
+        <div className="noise-overlay absolute inset-0" />
+        <SiteHeader />
+        <div className="relative mx-auto max-w-5xl px-4 pt-28 pb-24 sm:px-6 sm:pt-32 sm:pb-28">
+          <div className="animate-fade-up mx-auto max-w-2xl text-center">
             <div className="mb-6 flex justify-center">
-              <div className="flex h-20 w-20 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-                <ShieldCheckIcon className="h-10 w-10 text-white" />
+              <span className="inline-flex items-center gap-2 rounded-full bg-white/10 px-3 py-1 text-xs font-medium text-white/90 ring-1 ring-white/20">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                Secure email verification
+              </span>
+            </div>
+            <div className="mb-6 flex justify-center">
+              <div className="flex h-16 w-16 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25 backdrop-blur-sm">
+                <ShieldCheckIcon className="h-8 w-8 text-white" />
               </div>
             </div>
-            <h1 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl md:text-6xl">OTP Security System</h1>
-            <p className="mx-auto mb-8 max-w-2xl text-lg text-white/90 sm:text-xl">
+            <h1 className="mb-4 text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl">OTP Security System</h1>
+            <p className="mx-auto mb-8 max-w-xl text-base leading-relaxed text-white/80 sm:text-lg">
               A secure one-time password system for email verification. Test the complete OTP flow from sending to verification.
             </p>
-            <div className="flex flex-col gap-4 sm:flex-row sm:justify-center">
-              <Button size="lg" onClick={() => router.push("/otp/send")} className="gap-2 bg-white text-purple-700 hover:bg-white/90">
-                Send OTP
-                <ArrowRightIcon className="h-4 w-4" />
+            <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+              <Button asChild size="lg" className="h-11 gap-2 bg-white px-6 text-indigo-800 shadow-lg shadow-black/20 hover:bg-white/90">
+                <Link href="/otp/send">
+                  Send OTP
+                  <ArrowRightIcon className="h-4 w-4" />
+                </Link>
+              </Button>
+              <Button asChild size="lg" variant="ghost" className="h-11 text-white hover:bg-white/10 hover:text-white">
+                <a href="#how-it-works">How it works</a>
               </Button>
             </div>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="container mx-auto px-4 py-16">
-        <div className="mb-16">
-          <div className="mb-16">
-            <h2 className="text-foreground mb-8 text-center text-2xl font-semibold">How It Works</h2>
-            <div className="grid gap-6 md:grid-cols-3">
-              <Card>
-                <CardHeader>
-                  <div className="bg-primary/10 mb-2 flex h-12 w-12 items-center justify-center rounded-lg">
-                    <MailIcon className="text-primary h-6 w-6" />
-                  </div>
-                  <CardTitle>1. Request OTP</CardTitle>
-                  <CardDescription>Enter your email address to receive a secure 6-digit one-time password.</CardDescription>
-                </CardHeader>
-              </Card>
+      <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6 sm:py-20">
+        <section id="how-it-works" className="mb-16 scroll-mt-8">
+          <div className="mb-8 text-center">
+            <p className="text-primary mb-2 text-sm font-medium tracking-wide uppercase">Flow</p>
+            <h2 className="text-foreground text-2xl font-semibold tracking-tight sm:text-3xl">How It Works</h2>
+          </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {steps.map((step) => {
+              const Icon = step.icon;
+              return (
+                <Card key={step.title} className="border-border/80 hover:border-primary/25 transition-all hover:-translate-y-0.5 hover:shadow-md">
+                  <CardHeader>
+                    <div className="bg-primary/10 mb-3 flex h-11 w-11 items-center justify-center rounded-xl">
+                      <Icon className="text-primary h-5 w-5" />
+                    </div>
+                    <CardTitle>{step.title}</CardTitle>
+                    <CardDescription className="leading-relaxed">{step.description}</CardDescription>
+                  </CardHeader>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
 
-              <Card>
-                <CardHeader>
-                  <div className="bg-primary/10 mb-2 flex h-12 w-12 items-center justify-center rounded-lg">
-                    <KeyRoundIcon className="text-primary h-6 w-6" />
-                  </div>
-                  <CardTitle>2. Enter Code</CardTitle>
-                  <CardDescription>Check your email and enter the 6-digit OTP code you received.</CardDescription>
-                </CardHeader>
-              </Card>
+        <Card className="border-primary/15 from-primary/5 to-card mb-6 bg-gradient-to-br via-transparent">
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <ShieldCheckIcon className="text-primary h-5 w-5" />
+              Test Requirements
+            </CardTitle>
+            <CardDescription>Requirements for a secure OTP system</CardDescription>
+          </CardHeader>
+          <CardContent>
+            <ul className="grid gap-3 sm:grid-cols-2">
+              {testRequirements.map((requirement) => (
+                <li className="flex items-start gap-2.5" key={requirement.point}>
+                  <CheckCircle2Icon className="text-primary mt-0.5 h-4 w-4 shrink-0" />
+                  <span className="text-muted-foreground text-sm leading-relaxed">{requirement.point}</span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
 
-              <Card>
-                <CardHeader>
-                  <div className="bg-primary/10 mb-2 flex h-12 w-12 items-center justify-center rounded-lg">
-                    <ShieldCheckIcon className="text-primary h-6 w-6" />
-                  </div>
-                  <CardTitle>3. Verify</CardTitle>
-                  <CardDescription>Submit the code to verify your OTP.</CardDescription>
-                </CardHeader>
-              </Card>
+        <section>
+          <div className="mb-6 flex items-end justify-between gap-4">
+            <div>
+              <h2 className="text-foreground flex items-center gap-2 text-xl font-semibold tracking-tight">
+                <HelpCircleIcon className="text-primary h-5 w-5" />
+                About This Project
+              </h2>
+              <p className="text-muted-foreground mt-1 text-sm">A brief overview of this project, how it works and why it was built this way.</p>
             </div>
           </div>
-
-          <Card className="border-primary/20 bg-primary/5 my-4">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <ShieldCheckIcon className="h-5 w-5" />
-                Test Requirements
-              </CardTitle>
-              <CardDescription>Requirements for a secure OTP system</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-muted-foreground text-sm">
-                {testRequirements.map((requirement) => (
-                  <li className="flex items-start gap-2" key={requirement.point}>
-                    <span className="text-primary">•</span>
-                    <span>{requirement.point}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-
-          <Card className="border-primary/20 bg-primary/5 my-4">
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <HelpCircleIcon className="h-5 w-5" />
-                About This Project
-              </CardTitle>
-              <CardDescription>A brief overview of this project, how it works and why it was built this way.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ul className="text-muted-foreground text-sm">
-                {aboutThisProject.map((about) => (
-                  <li className="flex items-start gap-2" key={about.point}>
-                    <span className="text-primary">•</span>
-                    <span>{about.point}</span>
-                  </li>
-                ))}
-              </ul>
-            </CardContent>
-          </Card>
-        </div>
+          <div className="grid gap-4 md:grid-cols-2">
+            {aboutThisProject.map((about) => {
+              const { label, body } = splitPoint(about.point);
+              return (
+                <Card key={about.point} className="border-border/80 hover:border-primary/20 transition-colors">
+                  <CardHeader className="gap-3">
+                    <span className="bg-primary/10 text-primary w-fit rounded-full px-2.5 py-0.5 text-[11px] font-medium tracking-wide uppercase">
+                      {label}
+                    </span>
+                    <CardDescription className="text-[13px] leading-relaxed">{body}</CardDescription>
+                  </CardHeader>
+                </Card>
+              );
+            })}
+          </div>
+        </section>
       </div>
+
+      <footer className="border-border/80 border-t">
+        <div className="text-muted-foreground mx-auto flex max-w-5xl flex-col items-center justify-between gap-2 px-4 py-8 text-xs sm:flex-row sm:px-6">
+          <p>Entrostat · OTP Security System</p>
+          <p>Test project · not indexed by search engines</p>
+        </div>
+      </footer>
     </div>
   );
 }

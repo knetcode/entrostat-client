@@ -44,25 +44,25 @@
 }
 
 :root {
-  --radius: 0.625rem;
-  --background: oklch(0.99 0 0);
-  --foreground: oklch(0.145 0 0);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.145 0 0);
+  --radius: 0.75rem;
+  --background: oklch(0.985 0.008 275);
+  --foreground: oklch(0.22 0.03 275);
+  --card: oklch(0.995 0.004 275);
+  --card-foreground: oklch(0.22 0.03 275);
   --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.55 0.18 275);
-  --primary-foreground: oklch(1 0 0);
-  --secondary: oklch(0.97 0.01 275);
-  --secondary-foreground: oklch(0.145 0 0);
-  --muted: oklch(0.97 0 0);
-  --muted-foreground: oklch(0.556 0 0);
-  --accent: oklch(0.96 0.02 275);
-  --accent-foreground: oklch(0.145 0 0);
+  --popover-foreground: oklch(0.22 0.03 275);
+  --primary: oklch(0.45 0.2 275);
+  --primary-foreground: oklch(0.99 0.01 275);
+  --secondary: oklch(0.96 0.02 275);
+  --secondary-foreground: oklch(0.28 0.05 275);
+  --muted: oklch(0.965 0.012 275);
+  --muted-foreground: oklch(0.5 0.03 275);
+  --accent: oklch(0.95 0.03 275);
+  --accent-foreground: oklch(0.28 0.05 275);
   --destructive: oklch(0.577 0.245 27.325);
-  --border: oklch(0.92 0 0);
-  --input: oklch(0.92 0 0);
-  --ring: oklch(0.55 0.18 275);
+  --border: oklch(0.91 0.02 275);
+  --input: oklch(0.91 0.02 275);
+  --ring: oklch(0.45 0.2 275);
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -70,12 +70,12 @@
   --chart-5: oklch(0.769 0.188 70.08);
   --sidebar: oklch(0.985 0 0);
   --sidebar-foreground: oklch(0.145 0 0);
-  --sidebar-primary: oklch(0.55 0.18 275);
+  --sidebar-primary: oklch(0.45 0.2 275);
   --sidebar-primary-foreground: oklch(1 0 0);
   --sidebar-accent: oklch(0.97 0 0);
   --sidebar-accent-foreground: oklch(0.145 0 0);
   --sidebar-border: oklch(0.922 0 0);
-  --sidebar-ring: oklch(0.55 0.18 275);
+  --sidebar-ring: oklch(0.45 0.2 275);
 }
 
 .dark {
@@ -85,8 +85,8 @@
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.65 0.2 275);
-  --primary-foreground: oklch(0.99 0 0);
+  --primary: oklch(0.7 0.16 275);
+  --primary-foreground: oklch(0.2 0.05 275);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
@@ -96,7 +96,7 @@
   --destructive: oklch(0.704 0.191 22.216);
   --border: oklch(1 0 0 / 10%);
   --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.65 0.2 275);
+  --ring: oklch(0.7 0.16 275);
   --chart-1: oklch(0.488 0.243 264.376);
   --chart-2: oklch(0.696 0.17 162.48);
   --chart-3: oklch(0.769 0.188 70.08);
@@ -104,12 +104,12 @@
   --chart-5: oklch(0.645 0.246 16.439);
   --sidebar: oklch(0.205 0 0);
   --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.65 0.2 275);
+  --sidebar-primary: oklch(0.7 0.16 275);
   --sidebar-primary-foreground: oklch(0.99 0 0);
   --sidebar-accent: oklch(0.269 0 0);
   --sidebar-accent-foreground: oklch(0.985 0 0);
   --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.65 0.2 275);
+  --sidebar-ring: oklch(0.7 0.16 275);
 }
 
 @layer base {
@@ -117,7 +117,46 @@
     @apply border-border outline-ring/50;
   }
 
+  html {
+    scroll-behavior: smooth;
+  }
+
   body {
     @apply bg-background text-foreground;
   }
+}
+
+@layer components {
+  .mesh-bg {
+    background:
+      radial-gradient(ellipse 90% 70% at 12% -10%, oklch(0.5 0.2 275 / 0.55), transparent 55%),
+      radial-gradient(ellipse 70% 55% at 92% 8%, oklch(0.45 0.18 310 / 0.38), transparent 50%),
+      radial-gradient(ellipse 55% 45% at 50% 110%, oklch(0.38 0.12 250 / 0.35), transparent 55%),
+      linear-gradient(165deg, oklch(0.24 0.07 275) 0%, oklch(0.17 0.05 270) 48%, oklch(0.13 0.04 260) 100%);
+  }
+
+  .noise-overlay {
+    pointer-events: none;
+    opacity: 0.08;
+    background-image: repeating-radial-gradient(circle at 17% 32%, rgb(255 255 255 / 0.35) 0 0.5px, transparent 0.8px 3px);
+  }
+
+  .glass-card {
+    @apply border-white/60 bg-white/95 shadow-2xl shadow-black/20 backdrop-blur-xl;
+  }
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-up {
+  animation: fade-up 0.55s ease-out both;
 }
