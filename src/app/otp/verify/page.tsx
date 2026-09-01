@@ -14,6 +14,7 @@ import { Spinner } from "@/src/components/ui/spinner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/src/components/ui/card";
 import { OtpField } from "@/src/components/otp-field";
 import { env } from "@/src/env.mjs";
+import { AuthShell } from "@/src/components/auth-shell";
 
 function OtpVerifyContent() {
   const verifyOtp = useOtpVerify();
@@ -113,16 +114,16 @@ function OtpVerifyContent() {
       <div className="w-full max-w-md">
         <div className="mb-8 text-center">
           <div className="mb-4 flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-              <LoaderCircleIcon className="h-8 w-8 animate-spin text-white" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25 backdrop-blur-sm">
+              <LoaderCircleIcon className="h-7 w-7 animate-spin text-white" />
             </div>
           </div>
-          <h1 className="mb-2 text-3xl font-bold text-white">Verify Your OTP</h1>
-          <p className="text-sm text-white/90">
+          <h1 className="mb-2 text-3xl font-semibold tracking-tight text-white">Verify Your OTP</h1>
+          <p className="text-sm text-white/80">
             Enter the 6-digit code sent to <span className="font-medium text-white">{email}</span>
           </p>
         </div>
-        <Card className="shadow-lg">
+        <Card className="glass-card border-white/15 bg-white/5 shadow-2xl shadow-black/40 backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Verifying OTP...</CardTitle>
             <CardDescription>Please wait while we verify your code</CardDescription>
@@ -130,7 +131,7 @@ function OtpVerifyContent() {
           <CardContent>
             <div className="flex flex-col items-center justify-center py-8">
               <Spinner />
-              <p className="text-foreground/60 mt-4 text-sm">Verifying your code...</p>
+              <p className="text-muted-foreground mt-4 text-sm">Verifying your code...</p>
             </div>
           </CardContent>
         </Card>
@@ -139,19 +140,19 @@ function OtpVerifyContent() {
   }
 
   return (
-    <div className="w-full max-w-md">
+    <div className="animate-fade-up w-full max-w-md">
       <div className="mb-8 text-center">
         <div className="mb-4 flex justify-center">
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-            <KeyRoundIcon className="h-8 w-8 text-white" />
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25 backdrop-blur-sm">
+            <KeyRoundIcon className="h-7 w-7 text-white" />
           </div>
         </div>
-        <h1 className="mb-2 text-3xl font-bold text-white">Verify Your OTP</h1>
-        <p className="text-sm text-white/90">
+        <h1 className="mb-2 text-3xl font-semibold tracking-tight text-white">Verify Your OTP</h1>
+        <p className="text-sm text-white/80">
           Enter the 6-digit code sent to <span className="font-medium text-white">{email}</span>
         </p>
       </div>
-      <Card className="shadow-lg">
+      <Card className="glass-card border-white/15 bg-white/5 shadow-2xl shadow-black/40 backdrop-blur-xl">
         <CardHeader>
           <CardTitle>OTP Verification</CardTitle>
           <CardDescription>Please enter the OTP code you received via email</CardDescription>
@@ -163,7 +164,7 @@ function OtpVerifyContent() {
               selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}
               children={([canSubmit, isSubmitting, isDirty]) => (
                 <div className="flex flex-col gap-3">
-                  <Button type="submit" disabled={!canSubmit || isSubmitting || !isDirty} className="w-full">
+                  <Button type="submit" disabled={!canSubmit || isSubmitting || !isDirty} className="h-11 w-full">
                     {isSubmitting ? (
                       <>
                         <Spinner />
@@ -174,7 +175,7 @@ function OtpVerifyContent() {
                     )}
                   </Button>
 
-                  <Button type="button" variant="outline" onClick={handleResend} disabled={!canResend} className="w-full">
+                  <Button type="button" variant="outline" onClick={handleResend} disabled={!canResend} className="h-11 w-full">
                     {resendOtp.isPending ? (
                       <>
                         <Spinner />
@@ -203,21 +204,17 @@ function OtpVerifyContent() {
 function LoadingFallback() {
   return (
     <div className="flex items-center justify-center">
-      <LoaderCircleIcon className="text-primary h-8 w-8 animate-spin" />
+      <LoaderCircleIcon className="h-8 w-8 animate-spin text-white" />
     </div>
   );
 }
 
 export default function OtpVerifyPage() {
   return (
-    <div className="relative flex min-h-screen items-center justify-center p-4">
-      <div className="absolute inset-0 bg-gradient-to-br from-[#667eea] to-[#764ba2]" />
-      <div className="bg-grid-white/[0.05] absolute inset-0 bg-[size:20px_20px]" />
-      <div className="relative">
-        <Suspense fallback={<LoadingFallback />}>
-          <OtpVerifyContent />
-        </Suspense>
-      </div>
-    </div>
+    <AuthShell step={2}>
+      <Suspense fallback={<LoadingFallback />}>
+        <OtpVerifyContent />
+      </Suspense>
+    </AuthShell>
   );
 }

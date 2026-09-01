@@ -11,6 +11,7 @@ import { FormField } from "@/src/components/form-field";
 import { Button } from "@/src/components/ui/button";
 import { Spinner } from "@/src/components/ui/spinner";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/src/components/ui/card";
+import { AuthShell } from "@/src/components/auth-shell";
 
 export default function OtpSendPage() {
   const sendOtp = useOtpSend();
@@ -48,22 +49,18 @@ export default function OtpSendPage() {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center p-4">
-      {/* Gradient background */}
-      <div className="absolute inset-0 bg-gradient-to-br from-[#667eea] to-[#764ba2]" />
-      <div className="bg-grid-white/[0.05] absolute inset-0 bg-[size:20px_20px]" />
-
-      <div className="relative w-full max-w-md">
+    <AuthShell step={1}>
+      <div className="animate-fade-up w-full max-w-md">
         <div className="mb-8 text-center">
           <div className="mb-4 flex justify-center">
-            <div className="flex h-16 w-16 items-center justify-center rounded-full bg-white/20 backdrop-blur-sm">
-              <MailIcon className="h-8 w-8 text-white" />
+            <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 ring-1 ring-white/25 backdrop-blur-sm">
+              <MailIcon className="h-7 w-7 text-white" />
             </div>
           </div>
-          <h1 className="mb-2 text-3xl font-bold text-white">Enter Your Email</h1>
-          <p className="text-sm text-white/90">We&apos;ll send you a one-time password to verify your account</p>
+          <h1 className="mb-2 text-3xl font-semibold tracking-tight text-white">Enter Your Email</h1>
+          <p className="text-sm text-white/80">We&apos;ll send you a one-time password to verify your account</p>
         </div>
-        <Card className="shadow-lg">
+        <Card className="glass-card border-white/15 bg-white/5 shadow-2xl shadow-black/40 backdrop-blur-xl">
           <CardHeader>
             <CardTitle>Request OTP</CardTitle>
             <CardDescription>Enter your email address to receive a one-time password</CardDescription>
@@ -77,7 +74,7 @@ export default function OtpSendPage() {
               <form.Subscribe
                 selector={(state) => [state.canSubmit, state.isSubmitting, state.isDirty]}
                 children={([canSubmit, isSubmitting, isDirty]) => (
-                  <Button type="submit" disabled={!canSubmit || isSubmitting || !isDirty} className="w-full">
+                  <Button type="submit" disabled={!canSubmit || isSubmitting || !isDirty} className="h-11 w-full">
                     {isSubmitting ? (
                       <>
                         <Spinner />
@@ -93,6 +90,6 @@ export default function OtpSendPage() {
           </CardContent>
         </Card>
       </div>
-    </div>
+    </AuthShell>
   );
 }
